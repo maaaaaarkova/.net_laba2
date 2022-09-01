@@ -10,125 +10,108 @@ namespace net_laba2.XmlServices
     {
         public IEnumerable<Author> ReadAuthor(string filename)
         {
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(filename);
+
             var authors = new List<Author>();
-            using (XmlReader reader = XmlReader.Create(filename))
+
+            foreach (XmlElement item in xmlDoc.DocumentElement)
             {
-                while (reader.ReadToFollowing("Author"))
+                var author = new Author
                 {
-                    reader.ReadToFollowing("Id");
-                    var author = new Author { Id = int.Parse(reader.ReadElementContentAsString()) };
+                    Id = int.Parse(item["Id"].InnerText),
+                    Name = item["Name"].InnerText
+                };
 
-                    reader.ReadToFollowing("Name");
-                    author.Name = reader.ReadElementContentAsString();
-
-                    authors.Add(author);
-                }
+                authors.Add(author);
             }
             return authors;
         }
         public IEnumerable<Book> ReadBook(string filename)
         {
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(filename);
+
             var books = new List<Book>();
-            using (XmlReader reader = XmlReader.Create(filename))
+
+            foreach (XmlElement item in xmlDoc.DocumentElement)
             {
-                while (reader.ReadToFollowing("Book"))
+                var book = new Book
                 {
-                    reader.ReadToFollowing("Id");
-                    var book = new Book { Id = int.Parse(reader.ReadElementContentAsString()) };
+                    Id = int.Parse(item["Id"].InnerText),
+                    Name = item["Name"].InnerText,
+                    AuthorId = int.Parse(item["AuthorId"].InnerText),
+                    GenreId = int.Parse(item["GenreId"].InnerText),
+                    Deposit = decimal.Parse(item["Deposit"].InnerText),
+                    RentPrice = decimal.Parse(item["RentPrice"].InnerText)
+                };
 
-                    reader.ReadToFollowing("Name");
-                    book.Name = reader.ReadElementContentAsString();
-
-                    reader.ReadToFollowing("AuthorId");
-                    book.AuthorId = int.Parse(reader.ReadElementContentAsString());
-
-                    reader.ReadToFollowing("GenreId");
-                    book.GenreId = int.Parse(reader.ReadElementContentAsString());
-
-                    reader.ReadToFollowing("Deposit");
-                    book.Deposit = decimal.Parse(reader.ReadElementContentAsString());
-
-                    reader.ReadToFollowing("RentPrice");
-                    book.RentPrice = decimal.Parse(reader.ReadElementContentAsString());
-
-                    books.Add(book);
-                }
+                books.Add(book);
             }
             return books;
         }
         public IEnumerable<Genre> ReadGenre(string filename)
         {
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(filename);
+
             var genres = new List<Genre>();
-            using (XmlReader reader = XmlReader.Create(filename))
+
+            foreach (XmlElement item in xmlDoc.DocumentElement)
             {
-                while (reader.ReadToFollowing("Genre"))
+                var genre = new Genre
                 {
-                    reader.ReadToFollowing("Id");
-                    var genre = new Genre { Id = int.Parse(reader.ReadElementContentAsString()) };
+                    Id = int.Parse(item["Id"].InnerText),
+                    Name = item["Name"].InnerText
+                };
 
-                    reader.ReadToFollowing("Name");
-                    genre.Name = reader.ReadElementContentAsString();
-
-                    genres.Add(genre);
-                }
+                genres.Add(genre);
             }
             return genres;
         }
         public IEnumerable<Reader> ReadReader(string filename)
         {
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(filename);
+
             var users = new List<Reader>();
-            using (XmlReader reader = XmlReader.Create(filename))
+
+            foreach (XmlElement item in xmlDoc.DocumentElement)
             {
-                while (reader.ReadToFollowing("Reader"))
+                var user = new Reader
                 {
-                    reader.ReadToFollowing("Id");
-                    var user = new Reader { Id = int.Parse(reader.ReadElementContentAsString()) };
+                    Id = int.Parse(item["Id"].InnerText),
+                    LastName = item["LastName"].InnerText,
+                    Name = item["Name"].InnerText,
+                    Patronymic = item["Patronymic"].InnerText,
+                    Address = item["Address"].InnerText,
+                    PhoneNumber = item["PhoneNumber"].InnerText,
+                    Category = (Category)Enum.Parse(typeof(Category), item["Category"].InnerText)
+                };
 
-                    reader.ReadToFollowing("LastName");
-                    user.LastName = reader.ReadElementContentAsString();
-
-                    reader.ReadToFollowing("Name");
-                    user.Name = reader.ReadElementContentAsString();
-                    
-                    reader.ReadToFollowing("Patronymic");
-                    user.Patronymic = reader.ReadElementContentAsString();
-
-                    reader.ReadToFollowing("Address");
-                    user.Address = reader.ReadElementContentAsString();
-
-                    reader.ReadToFollowing("PhoneNumber");
-                    user.PhoneNumber = reader.ReadElementContentAsString();
-
-                    reader.ReadToFollowing("Category");
-                    user.Category = (Category)Enum.Parse(typeof(Category), reader.ReadElementContentAsString());
-
-                    users.Add(user);
-                }
+                users.Add(user);
             }
             return users;
         }
 
         public IEnumerable<RentedBook> ReadRentedBooks(string filename)
         {
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(filename);
+
             var rentedBooks = new List<RentedBook>();
-            using (XmlReader reader = XmlReader.Create(filename))
+
+            foreach (XmlElement item in xmlDoc.DocumentElement)
             {
-                while (reader.ReadToFollowing("RentedBook"))
+                var rentedBook = new RentedBook
                 {
-                    reader.ReadToFollowing("ReaderId");
-                    var rentedBook = new RentedBook{ ReaderId = int.Parse(reader.ReadElementContentAsString()) };
+                    ReaderId = int.Parse(item["ReaderId"].InnerText),
+                    BookId = int.Parse(item["BookId"].InnerText),
+                    IssueDate = DateTime.Parse(item["IssueDate"].InnerText),
+                    ReturnDate = DateTime.Parse(item["ReturnDate"].InnerText)
+                };
 
-                    reader.ReadToFollowing("BookId");
-                    rentedBook.BookId = int.Parse(reader.ReadElementContentAsString());
-
-                    reader.ReadToFollowing("IssueDate");
-                    rentedBook.IssueDate = DateTime.Parse(reader.ReadElementContentAsString());
-
-                    reader.ReadToFollowing("ReturnDate");
-                    rentedBook.ReturnDate = DateTime.Parse(reader.ReadElementContentAsString());
-
-                    rentedBooks.Add(rentedBook);
-                } ;
+                rentedBooks.Add(rentedBook);
             }
             return rentedBooks;
         }
